@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -61,7 +62,7 @@ public class ZipSourceCallable extends MasterToSlaveFileCallable<String> {
     @Override
     public String invoke(File f, VirtualChannel channel) throws IOException {
         // Create a temp file to zip into so we do not zip ourselves
-        File tempFile = File.createTempFile(f.getName(), null, null);
+        File tempFile = Files.createTempFile(f.getName(), null).toFile();
         try(OutputStream zipFileOutputStream = new FileOutputStream(tempFile)) {
             zipSourceWithArchiver(zipFileOutputStream);
         } catch (IOException e) {
